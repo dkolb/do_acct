@@ -25,47 +25,6 @@ resource helm_release "cert_manager" {
   }
 }
 
-resource "helm_release" "test_site" {
-  name       = "joomla"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "joomla"
-
-  values = [yamlencode({
-    joomlaPassword = var.initial_password
-    joomlaUsername = var.initial_user
-    persistence = {
-      enabled = false
-    }
-    mariadb = {
-      master = {
-        persistence = {
-          enabled = false
-        }
-      }
-    }
-    service = {
-      type = "ClusterIP"
-    }
-    ingress = {
-      hosts = [
-        { name = "www.do.krinchan.com" }
-      ]
-      enabled     = true
-      certManager = true
-      tls = [
-        {
-          hosts      = ["www.do.krinchan.com"]
-          secretName = "joomla.local-tls"
-        }
-      ]
-      annotations = {
-        "kubernetes.io/ingress.class"    = "nginx"
-        "cert-manager.io/cluster-issuer" = "letsencrypt-prod"
-      }
-    }
-  })]
-}
-
 resource "kubernetes_secret" "cert_manager_dns_challenge" {
   metadata {
     name = "certmanager-dns-challenge"
