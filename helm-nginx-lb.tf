@@ -31,7 +31,8 @@ resource "helm_release" "test_site" {
   chart      = "joomla"
 
   values = [yamlencode({
-    joomlaPassword = "initalpassword"
+    joomlaPassword = var.initial_password
+    joomlaUsername = var.initial_user
     persistence = {
       enabled = false
     }
