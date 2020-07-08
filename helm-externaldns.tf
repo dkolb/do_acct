@@ -7,6 +7,7 @@ resource helm_release "external_dns" {
       "create" = true
     },
     "provider" = "digitalocean",
+    # "source"   = ["ingress"],
     "digitalocean" = {
       "apiToken" = var.do_token
     },
